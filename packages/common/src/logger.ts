@@ -8,18 +8,25 @@ type CreateLoggerOptions = LoggerOptions & {
 
 export const createLogger = (options: CreateLoggerOptions): Logger => {
     const { name, ...rest } = options;
-    const transport = process.env.NODE_ENV === "development" ? {
-        target: "pino-pretty",
-        options: {
-            colorize: true,
-            translateTime: "SYS:standard"
-        },
-    } : undefined;
+    
+    if (process.env.NODE_ENV === "development") {
+        return pino({
+            level: process.env.LOG_LEVEL || "info",
+            name,
+            transport: {
+                target: "pino-pretty",
+                options: {
+                    colorize: true,
+                    translateTime: "SYS:standard"
+                },
+            },
+            ...rest,
+        });
+    }
 
     return pino({
         level: process.env.LOG_LEVEL || "info",
         name,
-        transport,
         ...rest,
     });
 };

@@ -1,7 +1,7 @@
 import { ZodObject, ZodRawShape } from 'zod';
 
 interface EnvOptions {
-    source: NodeJS.ProcessEnv;
+    source?: NodeJS.ProcessEnv;
     serviceName: string;
 }
 
